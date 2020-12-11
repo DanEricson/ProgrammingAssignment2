@@ -4,7 +4,7 @@
 ## second function
 
 ## All matrices inverted by these functions are assumed to be square and 
-## invertable
+## invertible
 
 ## Write a short comment describing this function
 
@@ -17,7 +17,7 @@ makeCacheMatrix <- function(x = matrix()) {
     }
   
     get <- function() x
-    setInverse <- function(ginv) inv <<- ginv
+    setInverse <- function(solve) inv <<- solve
     getInverse <- function() inv
     
     list(set = set, get = get,
@@ -26,8 +26,19 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## Calculates the matrix inverse from the matrix created in the 
+## makeCacheMatrix() function
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheInverse <- function(x, ...) {
+        inv <- x$getInverse()
+        
+        if(!is.null(inv)) {
+          message("getting cached data")
+          return(inv)
+        }
+        
+        data <- x$get()
+        inv <- solve(data, ...)
+        x$setInverse(inv)
+        inv
 }
